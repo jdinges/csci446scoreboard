@@ -6,7 +6,7 @@ if (typeof sessionStorage.guessesLeft == 'undefined'){
 
 if (typeof sessionStorage.remote_db == 'undefined'){
 	sessionStorage.remote_db = "http://deep-fog-9092.herokuapp.com/scores"
-	//sessionStorage.remote_db = "http://localhost:3000/scores"
+	//sessionStorage.remote_db = "http://localhost:3000/"
 	console.log("Creating our link to the remote db...")
 }
 
@@ -45,7 +45,7 @@ $(function() {
         //populateHighScores(localStorage.highScores);
       }
 			sessionStorage.guessesLeft = parseInt(sessionStorage.guessesLeft.toString()) + 1;
-			$.post(remote_db, {"name" : userName, "amount": sessionStorage.guessesLeft.toString()});
+			$.post(sessionStorage.remote_db, {"name" : userName, "amount": sessionStorage.guessesLeft.toString()});
       restart("HOLY FUCKING EXPLODING SEALS, YOU WON! PLAY AGAIN, BITCH.");
     } else if(lastGuess > correctAnswer){
       //alert("Too Damn High!");
