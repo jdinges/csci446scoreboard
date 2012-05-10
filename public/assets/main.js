@@ -5,8 +5,8 @@ if (typeof sessionStorage.guessesLeft == 'undefined'){
 }
 
 if (typeof sessionStorage.remote_db == 'undefined'){
-	//sessionStorage.remote_db = "http://deep-fog-9092.herokuapp.com/"
-	sessionStorage.remote_db = "http://localhost:3000"
+	sessionStorage.remote_db = "http://deep-fog-9092.herokuapp.com/"
+	//sessionStorage.remote_db = "http://localhost:3000/scores"
 	console.log("Creating our link to the remote db...")
 }
 
@@ -44,7 +44,8 @@ $(function() {
 
         //populateHighScores(localStorage.highScores);
       }
-			$.post(remote_db, {"name" : userName, "amount": sessionStorage.guessesLeft.toString()+1});
+			sessionStorage.guessesLeft = parseInt(sessionStorage.guessesLeft.toString()) + 1;
+			$.post(sessionStorage.remote_db, {"name" : userName, "amount": sessionStorage.guessesLeft.toString()});
       restart("HOLY FUCKING EXPLODING SEALS, YOU WON! PLAY AGAIN, BITCH.");
     } else if(lastGuess > correctAnswer){
       //alert("Too Damn High!");
@@ -80,14 +81,15 @@ function compare(x,y){
   return y[0] - x[0];
 }
 
-function populateHighScores(scores) {
+function populateHighScores() {
   //console.log(localStorage.highScores);
   //console.log(scores);
 
 	// scores = JSON.parse(scores);
 	//   scores.sort(compare);
 
-	$.get(remote_db, function(scores) {
+	$.get(sessionStorage.remote_db, function(scores) {
+		//scores.sort(compare)
 		for (var i = 0; i < scores.length; ++i) {
 	    console.log(scores[i]);
 	    $('div#highScores').append("<p>" + scores[i].name + " " + scores[i].amount + "</p>");
