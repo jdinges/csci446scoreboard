@@ -5,7 +5,7 @@ if (typeof sessionStorage.guessesLeft == 'undefined'){
 }
 
 if (typeof sessionStorage.remote_db == 'undefined'){
-	sessionStorage.remote_db = "http://deep-fog-9092.herokuapp.com/"
+	sessionStorage.remote_db = "http://deep-fog-9092.herokuapp.com/scores"
 	//sessionStorage.remote_db = "http://localhost:3000/scores"
 	console.log("Creating our link to the remote db...")
 }
