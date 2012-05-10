@@ -1,4 +1,6 @@
 class ScoresController < ApplicationController
+  
+  respond_to :json
   # GET /scores
   # GET /scores.json
   def index
@@ -40,7 +42,7 @@ class ScoresController < ApplicationController
   # POST /scores
   # POST /scores.json
   def create
-    @score = Score.new(params[:score])
+    @score = Score.new(:name => params[:name], :score => params[:amount])
 
     respond_to do |format|
       if @score.save

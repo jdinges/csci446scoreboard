@@ -4,14 +4,20 @@ if (typeof sessionStorage.guessesLeft == 'undefined'){
   console.log("Creating guessesLeft variable...");
 }
 
+if (typeof sessionStorage.remote_db == 'undefined'){
+	//sessionStorage.remote_db = "http://deep-fog-9092.herokuapp.com/"
+	sessionStorage.remote_db = "http://localhost:3000"
+	console.log("Creating our link to the remote db...")
+}
+
 if (typeof sessionStorage.secretNumber == 'undefined'){
   sessionStorage.secretNumber = Math.floor(Math.random()*100) + 1;
 }
 
-if(typeof localStorage.highScores == 'undefined'){
-  var ary = new Array([9, "HarryJamesPotter"], [3, "ZedCthulhu"], [2, "NearlyDied"]);
-  localStorage['highScores']=JSON.stringify(ary);
-}
+// if(typeof localStorage.highScores == 'undefined'){
+//   var ary = new Array([9, "HarryJamesPotter"], [3, "ZedCthulhu"], [2, "NearlyDied"]);
+//   localStorage['highScores']=JSON.stringify(ary);
+// }
 
 $(function() {
   
@@ -38,6 +44,7 @@ $(function() {
 
         //populateHighScores(localStorage.highScores);
       }
+			$.post(remote_db, {"name" : userName, "amount": sessionStorage.guessesLeft.toString()+1});
       restart("HOLY FUCKING EXPLODING SEALS, YOU WON! PLAY AGAIN, BITCH.");
     } else if(lastGuess > correctAnswer){
       //alert("Too Damn High!");
@@ -76,14 +83,19 @@ function compare(x,y){
 function populateHighScores(scores) {
   //console.log(localStorage.highScores);
   //console.log(scores);
-  scores = JSON.parse(scores);
-  scores.sort(compare);
-  //scores = makeArrayFromJSON(scores);
 
-  for (var i = 0; i < scores.length; ++i) {
-    console.log(scores[i]);
-    $('div#highScores').append("<p>" + scores[i][0] + " " + scores[i][1] + "</p>");
-  }
+	// scores = JSON.parse(scores);
+	//   scores.sort(compare);
+
+	$.get(remote_db, function(scores) {
+		for (var i = 0; i < scores.length; ++i) {
+	    console.log(scores[i]);
+	    $('div#highScores').append("<p>" + scores[i].name + " " + scores[i].amount + "</p>");
+	  }
+	})
+  	
+
+
 }
 
 function updateScore(score) {
